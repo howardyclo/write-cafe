@@ -1,0 +1,12 @@
+@font-face {
+	font-family: charter;
+	src: url('/app/static/fonts/charter/AppSILR.ttf');
+}
+
+html,body { 
+	margin: 0; 
+	padding: 0; 
+	height: 100%;
+	font-size: 14px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

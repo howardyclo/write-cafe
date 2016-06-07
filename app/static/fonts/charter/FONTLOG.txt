@@ -1,0 +1,57 @@
+FONTLOG
+Apparatus SIL font family
+========================
+
+
+This file provides detailed information on the Apparatus SIL family of fonts.
+This information should be distributed along with the Apparatus SIL fonts and
+any derivative works.
+
+
+Basic Font Information
+----------------------
+
+The Apparatus SIL Fonts were designed to provide most of the symbols needed 
+to reproduce the textual apparatus found in major editions of Greek & Hebrew 
+biblical texts.
+
+
+Four fonts from this typeface family are included in this release:
+
+     * Apparatus SIL Regular
+     * Apparatus SIL Bold
+     * Apparatus SIL Italic
+     * Apparatus SIL Bold Italic
+
+
+ChangeLog
+---------
+(This should list both major and minor changes, most recent first.)
+
+12 June 2009 Version 1.0 OFL release of Apparatus SIL.
+- reencoded for Unicode
+- released under OFL
+
+12 March 1998 Version 1.0 release of SIL Apparatus.
+
+
+
+
+Acknowledgements
+----------------
+(Here is where contributors can be acknowledged. If you make modifications
+be sure to add your name (N), email (E), web-address (W) and description
+(D). This list is sorted by last name in alphabetical order.)
+
+N: Victor Gaultney, Alex Kotlar
+E: fonts@sil.org
+W: http://scripts.sil.org/ApparatusSIL
+D: SIL designers and font engineers
+
+The Apparatus SIL project is maintained by SIL International.
+
+For more information please visit the Apparatus SIL page on SIL International's
+Computers and Writing systems website:
+http://scripts.sil.org/ApparatusSIL
+
+Or send an email to <fonts AT sil DOT org>

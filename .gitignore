@@ -1,0 +1,14 @@
+# System file
+.DS_Store
+
+# Logs
+npm-debug.log
+
+# Build
+public
+
+# Node modules
+node_modules
+
+# Virtual Env
+server/env
