@@ -118,7 +118,7 @@ class Prep(Resource):
 			res.append(d)
 		return res
 
-
+	# main
 	def process(self, s=''):
 
 		print 'INPUT SENTENCE:', s
