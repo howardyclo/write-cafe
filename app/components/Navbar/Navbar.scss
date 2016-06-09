@@ -5,3 +5,19 @@
 	margin: 0;
 	background: $navbar-bg-color;
 }
+
+.checkGrammar {
+	background: #38B87C;
+	color: white;
+	border: none;
+
+	&:hover {
+		background: #32a46f;
+		color: white;
+	}
+
+	&:focus {
+		outline: none;
+		color: white;
+	}
+}

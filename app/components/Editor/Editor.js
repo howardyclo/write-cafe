@@ -1,115 +1,198 @@
 import React, { Component } from 'react';
-import { Editor as DraftEditor, EditorState } from 'draft-js';
+import Immutable from 'immutable';
 import classnames from 'classnames';
+import { 
+	convertFromRaw,
+	convertToRaw,
+	convertFromHTML,
+	ContentState,
+	CompositeDecorator,
+	Editor as DraftEditor,
+	EditorState,
+	Entity,
+	Modifier,
+	SelectionState,
+} from 'draft-js';
 import styles from './Editor.scss';
+
+class Highlight extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			highlightStyle: {
+				borderBottom: '2px solid #b6f9cd'
+			}
+		}
+	}
+
+	handleOnMouseOver = () => {
+		this.setState({
+			highlightStyle: { 
+				background: '#b6f9cd',
+				padding: '2px 0'
+			}
+		});
+	}
+
+	handleOnMouseOut = () => {
+		this.setState({
+			highlightStyle: { 
+				borderBottom: '2px solid #b6f9cd'
+			}
+		});
+	}
+
+	render() {
+		return (
+			<span {...this.props} 
+				style={this.state.highlightStyle} 
+				onMouseOver={this.handleOnMouseOver}
+				onMouseOut={this.handleOnMouseOut}>
+				{this.props.children}
+			</span>
+		)
+	}
+}
+
+const handleHighLightStrategy = (contentBlock, callback) => {
+	// Execute callback if filter function (See if entity type is 'HIGHLIGHT') passes. 
+	contentBlock.findEntityRanges((characterMetadata) => {
+
+		const entityKey = characterMetadata.getEntity();
+
+		if (!entityKey)
+			return false;
+
+		return Entity.get(entityKey).getType() === 'HIGHLIGHT'
+
+	}, callback);
+}
+
+const decorator = new CompositeDecorator([{ 
+	strategy: handleHighLightStrategy,
+	component: Highlight
+}]);
 
 export default class Editor extends Component {
 
 	constructor(props) {
 		super(props);
-		
+				
 		this.state = {
-			editor: null,
-			editorState: EditorState.createEmpty()
+			autoCorrection: null,
+			editorState: EditorState.createEmpty(decorator)
 		}
 	}
 
-	handleOnChange = (editorState) => {
-
-		console.log(editorState.toJS());
-
-		this.setState({ editorState });
+	beforeCorrect = () => {
+		this.correct().then(correction => this.afterCorrect(correction));
 	}
 
-	handleBlur = (event, editable) => {
-		// console.log('blur', event);
+	correct = () => {
+
+		const { editorState } = this.state;
+		const currentBlockKey = editorState.getSelection().getAnchorKey();
+		const currentBlock = editorState.getCurrentContent().getBlockForKey(currentBlockKey);
+
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve({
+					blockKey: currentBlockKey,
+					sentence: 'listening to music',
+					entityRanges: {
+						offset: 'I am listening music'.indexOf('listening'),
+						length: 'listening music'.length,
+						key: 'highlight'
+					}
+				});
+			}, 2000);
+		});
 	}
 
-	handleEditableInput = (event, editable) => {
-		console.log('editableInput', event);
+	afterCorrect = (correction) => {
+
+		const { editorState } = this.state;
+		const contentState = editorState.getCurrentContent();
+
+		// Specify highlight range of text in the block
+		const targetRange = new SelectionState({
+			anchorKey: correction.blockKey,
+			anchorOffset: correction.entityRanges.offset,
+			focusKey: correction.blockKey,
+			focusOffset: correction.entityRanges.offset + correction.entityRanges.length
+		});
+
+		// Annotate ranges of text we specified above with metadata
+		const entityKey = Entity.create(
+			'HIGHLIGHT', 
+			'MUTABLE', 
+			{ correction }
+		);
+
+		// Apply the entity to the highlighted range 
+		const contentStateWithHighlight = Modifier.applyEntity(
+			contentState, 
+			targetRange, 
+			entityKey
+		);
+		
+		// Create a new editorState with highlighted text
+		const newEditorState = EditorState.push(
+			editorState,
+			contentStateWithHighlight,
+			'apply-entity'
+		);
+
+		// Update editorState
+		this.setState({ 
+			editorState: newEditorState
+		});
+
+		console.log(convertToRaw(this.state.editorState.getCurrentContent()));
 	}
 
-	handleExternalInteraction = (event, editable) => {
-		// console.log('externalInteraction', event);
-	}
+	handleOnChange = (newEditorState) => {
 
-	handleFocus = (event, editable) => {
-		// console.log('focus', event);
-	}
+		// Clear timeout
+		if (this.state.autoCorrection) {
+			clearTimeout(this.state.autoCorrection);
+			this.setState({
+				autoCorrection: null
+			});
+		}
 
-	componentDidMount(props) {
+		// Set timeout when content changed
+		if (!Immutable.is(newEditorState.getCurrentContent(), this.state.editorState.getCurrentContent())) {
+			this.setState({
+				autoCorrection: setTimeout(this.beforeCorrect, 2000)
+			});
+		}
 
-		let { editor } = this.state;
-
-		editor = new MediumEditor('#editor', this.props.options);
-		editor.subscribe('blur', this.handleBlur);
-		editor.subscribe('editableInput', this.handleEditableInput);
-		editor.subscribe('externalInteraction', this.handleExternalInteraction);
-		editor.subscribe('focus', this.handleFocus);
-	}
-
-	componentWillUnmount() {
-
-		let { editor } = this.state;
-
-		editor.unsubscribe('blur', this.handleBlur);
-		editor.unsubscribe('editableInput', this.handleEditableInput);
-		editor.unsubscribe('externalInteraction', this.handleExternalInteraction);
-		editor.unsubscribe('focus', this.handleFocus);
-		editor = null;
+		// Update editorState
+		this.setState({ 
+			editorState: newEditorState
+		});
 	}
 
 	render() {
-
-		// return (
-		// 	<div id="editor" className={styles.editor}></div>
-		// )
 		
 		const { editorState } = this.state; 
 		
 		return (
-			<div className={styles.editor}>
-				<DraftEditor editorState={editorState} onChange={this.handleOnChange} />
+			<div 
+				className={styles.container} 
+				onClick={() => this.refs.editor.focus()}>
+				<DraftEditor 
+					ref="editor"
+					placeholder="Write something ..."
+					editorState={editorState} 
+					onChange={this.handleOnChange} />
 			</div>
 		)
 	}
 }
-
-Editor.defaultProps = {
-	options: {
-		targetBlank: true,
-		autoLink: true,
-		toolbar: {
-	        buttons: [
-	        	{
-	        		name: 'bold',
-	        		classList: [styles.button]
-	        	},
-	        	{
-	        		name: 'italic',
-	        		classList: [styles.button]
-	        	},
-	        	{
-	        		name: 'quote',
-	        		classList: [styles.button]
-	        	},
-	        	{
-	        		name: 'anchor',
-	        		classList: [styles.button]
-	        	},
-	        	{
-	        		name: 'h2',
-	        		classList: [styles.button]
-	        	},
-	        ]
-	    },
-		placeholder: {
-			text: 'Write something ...',
-    		hideOnClick: true
-		}
-	}
-}
-
 
 
 

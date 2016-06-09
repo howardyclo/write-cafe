@@ -1,4 +1,4 @@
-.editor {
+.container {
 	width: 100%;
 	min-height: 150px;
 	background: $editor-bg-color;
@@ -6,8 +6,10 @@
 	padding: 25px;
 	margin-bottom: 25px;
 	font-size: 20px;
+	font-family: charter;
 	line-height: 30px;
 	outline: 0;
+	border-radius: 3px;
 
 	h1, h2, h3 {
 		font-weight: bold;
@@ -16,13 +18,5 @@
 
 	p {
 		font-family: charter;
-	}
-}
-
-.button {
-	color: rgba(255,255,255,0.6) !important;
-
-	&:hover {
-		color: rgba(255,255,255,1) !important;
 	}
 }

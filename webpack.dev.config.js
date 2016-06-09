@@ -9,6 +9,7 @@ const config = {
 	devtool: 'eval-source-map',
 	entry: {
 		app: [
+			'babel-polyfill',
 			'webpack-hot-middleware/client?reload=true',
 			// Our application
 			path.join(__dirname, 'app/index.js'),
