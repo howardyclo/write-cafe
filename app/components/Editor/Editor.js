@@ -86,71 +86,75 @@ export default class Editor extends Component {
 		}
 	}
 
-	beforeCorrect = () => {
-		this.correct().then(correction => this.afterCorrect(correction));
-	}
-
-	correct = () => {
+	prepareCorrect = () => {
 
 		const { editorState } = this.state;
+
 		const currentBlockKey = editorState.getSelection().getAnchorKey();
 		const currentBlock = editorState.getCurrentContent().getBlockForKey(currentBlockKey);
+		const currentBlockText = currentBlock.getText();
 
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve({
-					blockKey: currentBlockKey,
-					sentence: 'listening to music',
-					entityRanges: {
-						offset: 'I am listening music'.indexOf('listening'),
-						length: 'listening music'.length,
-						key: 'highlight'
-					}
-				});
-			}, 2000);
-		});
+		this.props.correct(
+			currentBlockKey, 
+			currentBlockText,
+			this.handleCorrectSuccess,
+			this.handleCorrectError
+		);
 	}
 
-	afterCorrect = (correction) => {
+	handleCorrectSuccess = (correction) => {
 
-		const { editorState } = this.state;
-		const contentState = editorState.getCurrentContent();
+		correction.map(item => {
 
-		// Specify highlight range of text in the block
-		const targetRange = new SelectionState({
-			anchorKey: correction.blockKey,
-			anchorOffset: correction.entityRanges.offset,
-			focusKey: correction.blockKey,
-			focusOffset: correction.entityRanges.offset + correction.entityRanges.length
-		});
+			const { editorState } = this.state;
+			const contentState = editorState.getCurrentContent();
+			
+			const {
+				blockKey,
+				entityRanges,
+				sentence
+			} = item;
 
-		// Annotate ranges of text we specified above with metadata
-		const entityKey = Entity.create(
-			'HIGHLIGHT', 
-			'MUTABLE', 
-			{ correction }
-		);
+			// Specify highlight range of text in the block
+			const targetRange = new SelectionState({
+				anchorKey: blockKey,
+				anchorOffset: entityRanges.offset,
+				focusKey: blockKey,
+				focusOffset: entityRanges.offset + entityRanges.length
+			});
 
-		// Apply the entity to the highlighted range 
-		const contentStateWithHighlight = Modifier.applyEntity(
-			contentState, 
-			targetRange, 
-			entityKey
-		);
-		
-		// Create a new editorState with highlighted text
-		const newEditorState = EditorState.push(
-			editorState,
-			contentStateWithHighlight,
-			'apply-entity'
-		);
+			// Annotate ranges of text we specified above with metadata
+			const entityKey = Entity.create(
+				'HIGHLIGHT', 
+				'IMMUTABLE', 
+				{ item }
+			);
 
-		// Update editorState
-		this.setState({ 
-			editorState: newEditorState
+			// Apply the entity to the highlighted range
+			const contentStateWithHighlight = Modifier.applyEntity(
+				contentState, 
+				targetRange, 
+				entityKey
+			);
+
+			// Create a new editorState with highlighted text
+			const newEditorState = EditorState.push(
+				editorState,
+				contentStateWithHighlight,
+				'apply-entity'
+			);
+
+			// Update editorState
+			this.setState({ 
+				editorState: newEditorState
+			});
 		});
 
 		console.log(convertToRaw(this.state.editorState.getCurrentContent()));
+	}
+
+	handleCorrectError = () => {
+		// TODO
 	}
 
 	handleOnChange = (newEditorState) => {
@@ -166,7 +170,7 @@ export default class Editor extends Component {
 		// Set timeout when content changed
 		if (!Immutable.is(newEditorState.getCurrentContent(), this.state.editorState.getCurrentContent())) {
 			this.setState({
-				autoCorrection: setTimeout(this.beforeCorrect, 2000)
+				autoCorrection: setTimeout(this.prepareCorrect, 2000)
 			});
 		}
 

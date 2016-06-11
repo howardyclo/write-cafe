@@ -14,9 +14,12 @@ class App extends Component {
 	}
 
 	render() {
+
+		const { status } = this.props;
+
 		return (
 			<div className={styles.container}>
-				<Navbar />
+				<Navbar status={status} />
 				{this.props.children}
 			</div>
 		)
@@ -24,7 +27,11 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return state;
+
+	const { grammarCorrecter } = state;
+	const { status } = grammarCorrecter;
+
+	return { status };
 }
 
 export default connect(mapStateToProps)(App);
