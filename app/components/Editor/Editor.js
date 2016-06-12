@@ -22,26 +22,17 @@ class Highlight extends Component {
 
 		this.state = {
 			highlightStyle: {
-				borderBottom: '2px solid #b6f9cd'
+				borderBottom: '2px solid #ffdf88'
 			}
 		}
 	}
 
 	handleOnMouseOver = () => {
-		this.setState({
-			highlightStyle: { 
-				background: '#b6f9cd',
-				padding: '2px 0'
-			}
-		});
+		
 	}
 
 	handleOnMouseOut = () => {
-		this.setState({
-			highlightStyle: { 
-				borderBottom: '2px solid #b6f9cd'
-			}
-		});
+		
 	}
 
 	render() {
@@ -102,18 +93,20 @@ export default class Editor extends Component {
 		);
 	}
 
-	handleCorrectSuccess = (correction) => {
+	handleCorrectSuccess = (blockKey, correction) => {
 
-		correction.map(item => {
+		Object.keys(correction).map(_entity => {
 
 			const { editorState } = this.state;
 			const contentState = editorState.getCurrentContent();
 			
 			const {
-				blockKey,
+				count,
+				entity,
 				entityRanges,
-				sentence
-			} = item;
+				examples,
+				sentence,
+			} = correction[_entity];
 
 			// Specify highlight range of text in the block
 			const targetRange = new SelectionState({
@@ -127,7 +120,7 @@ export default class Editor extends Component {
 			const entityKey = Entity.create(
 				'HIGHLIGHT', 
 				'IMMUTABLE', 
-				{ item }
+				{ candidates: correction[_entity] }
 			);
 
 			// Apply the entity to the highlighted range

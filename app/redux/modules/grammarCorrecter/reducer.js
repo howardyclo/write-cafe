@@ -1,11 +1,29 @@
-import * as types from './action-types';
+import * as types from './actionTypes';
 
 const initialState = {
-	correction: [],
+	correction: {},
 	status: {
 		type: 'success',
 		message: 'Correct grammar'
 	}
+}
+
+function formatCorrection(correction = []) {
+
+	let formattedCorrection = {}
+
+	correction.map(cadidate => {
+
+		if (cadidate.sentence.indexOf(cadidate.entity) != -1)
+			return;
+
+		if (formattedCorrection.hasOwnProperty(cadidate.entity))
+			formattedCorrection[cadidate.entity].push(cadidate)
+		else 
+			formattedCorrection[cadidate.entity] = [cadidate]
+	});
+
+	return formattedCorrection
 }
 
 export default function reducer(state = initialState, action) {
@@ -24,7 +42,7 @@ export default function reducer(state = initialState, action) {
 	case types.CORRECT_SUCCESS:
 		return { 
 			...state,
-			correction: action.payload.correction,
+			correction: formatCorrection(action.payload.correction),
 			status: {
 				...state.status,
 				type: 'success',

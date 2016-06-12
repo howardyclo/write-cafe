@@ -27,6 +27,7 @@
   "dependencies": {
     "classnames": "^2.2.1",
     "cors": "^2.7.1",
+    "diff": "^2.2.3",
     "draft-js": "^0.7.0",
     "express": "^4.13.4",
     "history": "^2.1.1",
@@ -41,7 +42,8 @@
     "react-router": "^2.4.0",
     "react-router-redux": "^4.0.4",
     "redux": "^3.0.5",
-    "redux-thunk": "^2.0.1"
+    "redux-thunk": "^2.0.1",
+    "restler": "^3.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.21",

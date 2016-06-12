@@ -9,6 +9,7 @@ certifi==2016.2.28
 click==6.6
 decorator==4.0.9
 Flask==0.11
+Flask-Cors==2.1.2
 Flask-RESTful==0.3.5
 functools32==3.2.3.post2
 gnureadline==6.3.3
@@ -35,6 +36,7 @@ notebook==4.1.0
 numpy==1.8.0rc1
 parallel==0.2.5
 path.py==8.1.2
+Pattern==2.6
 pbr==1.8.1
 pexpect==4.0.1
 pickleshare==0.6

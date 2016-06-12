@@ -1,4 +1,6 @@
-import * as types from './action-types';
+import config from '../../../config';
+import * as types from './actionTypes';
+import { mockCorrection } from './mockData.js';
 
 const correctRequest = (sentence) => ({
 	type: types.CORRECT_REQUEST,
@@ -21,32 +23,34 @@ export function correct(blockKey, sentence, handleSuccess, handleError) {
 
 		dispatch(correctRequest(sentence));
 
-		return setTimeout(() => {
+		return $.ajax({
+			type: 'GET',
+			url: `${config.API.BASE_URL}/${sentence}`,
+			success: function(correction) {
+				dispatch(correctSuccess(correction));
 
-			const correction = [
-				{
-					blockKey: blockKey,
-					sentence: 'listening to music',
-					entityRanges: {
-						offset: sentence.indexOf('listening music'),
-						length: 'listening music'.length,
-					}
-				},
-				{
-					blockKey: blockKey,
-					sentence: 'weather in here',
-					entityRanges: {
-						offset: sentence.indexOf('weather of here'),
-						length: 'weather of here'.length,
-					}
-				}
-			]
+				if (handleSuccess)
+					handleSuccess(blockKey, correction);
+			},
+			error: function(err) {
+				dispatch(correctError({
+					message: 'Server error'
+				}));
 
-			dispatch(correctSuccess(correction));
+				if (handleError)
+					handleError();
+			}
+		});
 
-			if (handleSuccess)
-				handleSuccess(correction);
+		// return setTimeout(() => {
+
+		// 	const correction = mockCorrection;
+
+		// 	dispatch(correctSuccess(correction));
+
+		// 	if (handleSuccess)
+		// 		handleSuccess(blockKey, correction);
 			
-		}, 2000);
+		// }, 2000);
 	}
 }

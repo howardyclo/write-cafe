@@ -6,4 +6,30 @@
 	color: $list-header-font-color;
 	border-bottom: 1px solid $list-header-border-color;
 	padding-bottom: 10px;
+	margin-bottom: 15px;
+}
+
+.hint {
+	background: $hint-bg-color;
+	border: 1px solid $hint-border-color;
+	padding: 15px 15px 0 15px;
+	margin-bottom: 10px;
+}
+
+.candidate {
+	margin-bottom: 15px;
+}
+
+.angle {
+	margin-right: 10px;
+}
+
+.percentage {
+	color: $list-header-font-color;
+	float: right;
+}
+
+.examples {
+	padding-top: 10px;
+	color: $list-header-font-color;
 }
