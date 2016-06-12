@@ -23,34 +23,36 @@ export function correct(blockKey, sentence, handleSuccess, handleError) {
 
 		dispatch(correctRequest(sentence));
 
-		// return $.ajax({
-		// 	type: 'GET',
-		// 	url: `${config.API.BASE_URL}/${sentence}`,
-		// 	success: function(correction) {
-		// 		dispatch(correctSuccess(correction));
+		return $.ajax({
+			type: 'GET',
+			url: `${config.API.BASE_URL}/${sentence}`,
+			success: function(correction) {
+				dispatch(correctSuccess(correction));
 
-		// 		if (handleSuccess)
-		// 			handleSuccess(blockKey, correction);
-		// 	},
-		// 	error: function(err) {
-		// 		dispatch(correctError({
-		// 			message: 'Server error'
-		// 		}));
+				if (handleSuccess)
+					handleSuccess(blockKey, correction);
+			},
+			error: function(err) {
+				dispatch(correctError({
+					message: 'Server error'
+				}));
 
-		// 		if (handleError)
-		// 			handleError();
-		// 	}
-		// });
+				if (handleError)
+					handleError();
+			}
+		});
 
-		return setTimeout(() => {
+		// For testing.
 
-			const correction = mockCorrection;
+		// return setTimeout(() => {
 
-			dispatch(correctSuccess(correction));
+		// 	const correction = mockCorrection;
 
-			if (handleSuccess)
-				handleSuccess(blockKey, correction);
+		// 	dispatch(correctSuccess(correction));
+
+		// 	if (handleSuccess)
+		// 		handleSuccess(blockKey, correction);
 			
-		}, 2000);
+		// }, 2000);
 	}
 }
