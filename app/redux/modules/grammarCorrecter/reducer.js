@@ -14,14 +14,13 @@ function formatCorrection(correction = []) {
 
 	correction.map(cadidate => {
 
-		if (cadidate.sentence.indexOf(cadidate.entity) != -1)
-			return;
-
 		if (formattedCorrection.hasOwnProperty(cadidate.entity))
 			formattedCorrection[cadidate.entity].push(cadidate)
 		else 
 			formattedCorrection[cadidate.entity] = [cadidate]
 	});
+
+	console.log(formattedCorrection);
 
 	return formattedCorrection
 }

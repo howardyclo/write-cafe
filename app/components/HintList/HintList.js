@@ -61,7 +61,7 @@ class Hint extends Component {
 						{
 							(exampleVisibility[index])
 								? <ul className={styles.examples}>{candidate.examples.map((example, index) => <li key={index}>{example}</li>)}</ul>
-								: null 
+								: null
 						}
 					</div>
 				))}
