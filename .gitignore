@@ -9,6 +9,3 @@ public
 
 # Node modules
 node_modules
-
-# Virtual Env
-server/env
