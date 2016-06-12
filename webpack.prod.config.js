@@ -2,13 +2,11 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const precss = require('precss')
 const autoprefixer = require('autoprefixer')
 
 const config = {
 	entry: {
 		app: [
-			// Using ES7 async/await feature
 			'babel-polyfill',
 			// Our application
 			path.join(__dirname, 'app/index.js'),
@@ -33,7 +31,7 @@ const config = {
 			},
 			{
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!postcss-loader!sass-loader!sass-resources-loader'),
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader!sass-resources-loader!postcss-loader'),
 				include: path.join(__dirname, 'app')
 			},
 			{
@@ -43,11 +41,11 @@ const config = {
 		]
 	},
 	sassResources: [
-		'app/styles/base/index.scss',
+		'app/styles/variables.scss',
 		'app/styles/global.scss'
 	],
 	postcss: [
-		precss, autoprefixer
+		autoprefixer
     ],
     resolve: {
         modulesDirectories: [
