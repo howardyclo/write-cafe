@@ -27,24 +27,28 @@ def generalizeTag(ngram):
         elif pos in V: ngram[i] = word + u'/V'
         elif pos in ADJ: ngram[i] = word + u'/ADJ'
         elif pos in ADV: ngram[i] = word + u'/ADV'
-        elif (pos == 'IN' and word not in sub_conj) or pos == 'TO': ngram[i] = word + u'/PREP'
+        elif (pos == 'IN' and word not in sub_conj) or (pos == 'TO' and ngram[i+1].split('/')[-1] != 'VB'): 
+            ngram[i] = word + u'/PREP'
     return ngram
 
 rules = defaultdict(lambda: 0)
 for line in fileinput.input():
     if line == '': break
+    # print line.split()
     words = line.decode('UTF-8').strip().split()
+    words = generalizeTag(words)
     for i, word in enumerate(words):
         wd = word.split('/')[0]
         pos = word.split('/')[-1]
-        if (pos == 'IN' and wd not in sub_conj) or (pos == 'TO' and words[i+1].split('/')[-1] != 'VB'):
+        if pos == 'PREP':
             for n in range(3, 6):
                 for k in range(i-n+1, i+1): # 從i(介係詞位置)往前n個字開始組ngram
                     if k < 0 or k+n > len(words): continue
-                    if k+n-1 == i and i != len(words)-2: continue # 介係詞必須是句子的結尾, 才可當ngram的最後一個字
+                    if (k+n-1 == i) and (i != len(words)-2): continue # 介係詞必須是句子的結尾, 才可當ngram的最後一個字
                     if k == i and i != 0: continue # 介係詞必須是句子的開頭, 才可當ngram的第一個字
-                    ngram = generalizeTag(words[k:k+n])
+                    ngram = words[k:k+n]
                     if isPattern(ngram):
+                        # print ngram
                         pos = tuple([elem.split('/')[-1].encode('UTF-8') for elem in ngram])
                         rules[pos] += 1
 
