@@ -1,9 +1,10 @@
 # Write Cafe
-A web-based English writing assistant with automatic grammar error correction (GEC).
+A web-based English writing assistant with automatic grammar error correction (GEC) and example sentence suggestion.
 
 ### Tech Stack
-  - Frontend: sass, es6, react, redux, webpack
+  - Frontend: sass, es6, react, redux, webpack.
   - Backend: nodejs for webserver, python flask for GEC business logic.
+  - Special credits: GEC functionality is based on Linggle API (A web-scale linguistics search engine), which is developed by NTHU NLPLAB.
 
 ### Get Started
 
