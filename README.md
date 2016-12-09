@@ -8,9 +8,11 @@ A web-based English writing assistant with automatic grammar error correction (G
 
 ### Get Started
 
-- Assume that you've installed python virtual environment package - `virtualenv`. You'll need to activate our virtual enviroment in this project, which contains all python packages required by this project.
+- Assume that you've installed python virtual environment package - `virtualenv`. First, you'll need to activate a virtual enviroment in this project, then install all python packages required by this project.
 ```
 >> source server/env/bin/activate
+>> cd server/env (where requirements.txt located at)
+>> pip install -r requirements.txt
 ```
 - Assume that you've installed nodejs and npm. Run `npm install` to install nodejs packages required by this project
 ```
