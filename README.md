@@ -13,22 +13,20 @@ A web-based English writing assistant with automatic grammar error correction (G
 
 ### Get Started
 
-<<<<<<< HEAD
 - Assume that you've installed python virtual environment package - `virtualenv`. First, you'll need to activate a virtual enviroment in this project, then install all python packages required by this project.
 ```
 >> source server/env/bin/activate
 >> cd server/env (where requirements.txt located at)
-=======
+```
 - Assume that you've installed python virtual environment package - `virtualenv`. You'll need to first create a new virtual environment, then activate it. By doing this to prevent installing python packages required by this project in global space.
 ```
->> virtualenv venv (create 'venv' folder whatever place you want to place in)
+>> virtualenv venv (Create 'venv' folder whatever place you want to place in)
 ```
 ```
->> source server/env/bin/activate (activate virtual environment)
+>> source server/env/bin/activate (Activate virtual environment)
 ```
 - Install python packages required by this project from requirements.txt. If there's any error, you can run `python server/app.py` to see what packages are required, then install them by `pip install <package>` one by one.
 ```
->>>>>>> 747e8c8b0e72a5507ac9f3ab3e45fe5af35c7b47
 >> pip install -r requirements.txt
 ```
 - Assume that you've installed nodejs and npm. Run `npm install` to install nodejs packages required by this project
