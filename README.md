@@ -18,7 +18,7 @@ A web-based English writing assistant with automatic grammar error correction (G
 >> virtualenv venv (Create 'venv' folder whatever place you want to place in)
 ```
 ```
->> source /venv/bin/activate (Activate virtual environment)
+>> source venv/bin/activate (Activate virtual environment)
 ```
 - Install python packages required by this project from requirements.txt. If there's any error, you can run `python server/app.py` to see what packages are required, then install them by `pip install <package>` one by one.
 ```
