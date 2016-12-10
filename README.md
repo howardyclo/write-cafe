@@ -29,7 +29,7 @@ A web-based English writing assistant with automatic grammar error correction (G
 ```
 >> pip install -r requirements.txt
 ```
-- Note that our project require tagger - `averaged_perceptron_tagger` and tokenizer - `punkt`, you'll need to install those first.
+- Note that our project requires `nltk` tagger - `averaged_perceptron_tagger` and tokenizer - `punkt`, you'll need to install those first.
 ```
 (python cmd)>>> import nltk
 (python cmd)>>> nltk.download()
