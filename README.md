@@ -6,6 +6,11 @@ A web-based English writing assistant with automatic grammar error correction (G
   - Backend: nodejs for webserver, python flask for GEC business logic.
   - Special credits: GEC functionality is based on Linggle API (A web-scale linguistics search engine), which is developed by NTHU NLPLAB.
 
+### Dev Environment
+  - node: v6.2.2 (recommend to use `nvm`)
+  - npm: 3.9.5
+  - python: 2.7.10
+
 ### Get Started
 
 - Assume that you've installed python virtual environment package - `virtualenv`. You'll need to first create a new virtual environment, then activate it. By doing this to prevent installing python packages required by this project in global space.
