@@ -47,7 +47,8 @@ A web-based English writing assistant with automatic grammar error correction (G
 ```
 
 ### API URL/Port Configuration
-You can run flask API server on different port by revise `port` in `/server/app.py` at localhost or deploy it on server, you'll need to change API URL in client app at `/app/config.js`.
+- You can run node web server on different port by revise `"start": "..."` command in `package.json`.
+- You can run flask API server on different port by revise `port` in `/server/app.py` at localhost or deploy it on server, you'll need to change API URL in client app at `/app/config.js`.
 
 ### Problem Shooting
 If there's any problem, please open an issue or send me an email.
