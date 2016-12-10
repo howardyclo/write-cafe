@@ -29,6 +29,11 @@ A web-based English writing assistant with automatic grammar error correction (G
 ```
 >> pip install -r requirements.txt
 ```
+- Note that our project require tagger - `averaged_perceptron_tagger` and tokenizer - `punkt`, you'll need to install those first.
+```
+(python cmd)>>> import nltk
+(python cmd)>>> nltk.download()
+```
 - Assume that you've installed nodejs and npm. Run `npm install` to install nodejs packages required by this project
 ```
 >> npm install
