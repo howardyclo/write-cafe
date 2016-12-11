@@ -4,7 +4,7 @@ import urllib
 def parseData(rowdict):
     def extract_word(word):
         return word.replace('<strong>', '').replace('</strong>', '').strip()
-    return (' '.join(map(extract_word, rowdict['phrase'])), float(rowdict['count_str']))
+    return (' '.join(map(extract_word, rowdict['phrase'])), float(rowdict['count_str'].replace(',','')))
 
 def linggleit(query):
     url = 'http://ironman.nlpweb.org:9487/?search={}'.format(urllib.quote(query, safe=''))
