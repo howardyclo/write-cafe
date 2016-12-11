@@ -7,7 +7,7 @@ def parseData(rowdict):
     return (' '.join(map(extract_word, rowdict['phrase'])), float(rowdict['count_str']))
 
 def linggleit(query):
-    url = 'http://lost.nlpweb.org:9487/?search={}'.format(urllib.quote(query, safe=''))
+    url = 'http://ironman.nlpweb.org:9487/?search={}'.format(urllib.quote(query, safe=''))
     r = requests.get(url)
     if r.status_code == 200:
         res = dict()
